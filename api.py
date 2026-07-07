@@ -22,7 +22,7 @@ app = FastAPI()
 
 cluster_centers = load_cluster_centers('data/color_clusters.csv')
 species_vectors, species_metadata = load_species_vectors('data/species_colors.csv')
-species_metadata = species_metadata.drop(columns = 'Morph')
+species_metadata = species_metadata.drop(columns = ['Morph','Illustration_id','Credit','Age'])
 
 @app.post("/identify")
 async def identify_bird(img: UploadFile, longitude: float = Form(...), latitude: float = Form(...), date: date = Form(...), plausible_species_json: str = Form(...)):

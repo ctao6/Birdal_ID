@@ -9,7 +9,7 @@ Traditional image classifiers need hundreds of labeled examples per class to tra
 1. **Reference data**: [a public dataset](https://datadryad.org/dataset/doi:10.5061/dryad.70rxwdc6s) thatquantifies plumage color across 18,757 illustrations from the *Handbook of the Birds of the World*, clustering each illustration's pixels into 24 fixed color buckets and recording what percentage of the image each bucket occupies.
 2. **User drawings** are processed the same way: every non-transparent pixel is softly assigned to the same 24 color buckets (an exponential decay weighting based on distance to each bucket's reference color), then averaged into one 24-dimensional vector for the whole image.
 3. Because both sides, reference illustrations and user drawings, end up as 24-length vectors that sum to 1, they're directly comparable with cosine or Euclidean distance.
-4. The result is ranked by similarity, optionally restricted to a caller-supplied list of plausible species (used upstream to filter by location/season via eBird).
+4. The result is ranked by similarity, optionally restricted to a list of plausible species (used upstream to filter by location/season via eBird).
 
 This approach sidesteps needing a large labeled training set, at the cost of being purely based on color distribution.
 

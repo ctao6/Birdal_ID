@@ -33,11 +33,14 @@ async def identify_bird(img: UploadFile, longitude: float = Form(...), latitude:
 
     pixels = load_opaque_pixels(image_stream, 1)
 
+    mask = species_metadata['Com_name'].isin(plausible_species)
+
+    filtered_metadata = species_metadata[mask]
+    filtered_vectors = species_vectors[mask]
+
     image_vector = image_color_vector(pixels, cluster_centers, 0.1)
-    rank = rank_species(image_vector, species_vectors, species_metadata, 18750, "cosine")
+    rank = rank_species(image_vector, filtered_vectors, filtered_metadata, 10, "cosine")
 
-    filtered = (rank[rank['Com_name'].isin(plausible_species)]).head(10)
-
-    return filtered.to_dict(orient = 'records')
+    return rank.to_dict(orient = 'records')
 
     

@@ -28,8 +28,8 @@ species_metadata = species_metadata.drop(columns = ['Morph','Illustration_id','C
 async def identify_bird(img: UploadFile, longitude: float = Form(...), latitude: float = Form(...), date: date = Form(...), plausible_species_json: str = Form(...)):
     raw_bytes = await img.read()
     image_stream = io.BytesIO(raw_bytes)
-    print(repr(plausible_species_json))
-    plausible_species = json.loads(plausible_species_json) 
+    
+    plausible_species = json.loads(plausible_species_json)
 
     pixels = load_opaque_pixels(image_stream, 1)
 

@@ -56,13 +56,17 @@ def image_color_vector(pixels, cluster_centers, temperature = 1) -> np.ndarray:
         vector, directly comparable to a species row in the reference table.
 
     """
-    ret = np.zeros(24)
-    num_pixels = pixels.shape[0]
 
-    for i in range(num_pixels):
-        ret = ret + pixel_weights(pixels[i],cluster_centers, temperature)
+    pixels_expanded = pixels[:, np.newaxis, :]
+    diffs = cluster_centers - pixels_expanded
+    squared = diffs**2
+    summed = squared.sum(axis=2)
+    distances = summed**0.5
+    raw_weights = np.exp(-distances/temperature)
 
-    return ret/num_pixels
+    weights = raw_weights/raw_weights.sum(axis=1)[:,np.newaxis]
+
+    return weights.mean(axis=0)
     
     
         

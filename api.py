@@ -42,7 +42,7 @@ async def identify_bird(img: UploadFile, longitude: float = Form(...), latitude:
 
         image_vector = image_color_vector(pixels, cluster_centers, 0.1)
         rank = rank_species(image_vector, filtered_vectors, filtered_metadata, 20, "cosine")
-        rank = rank.drop_duplicates()
+        rank = rank.drop_duplicates(subset=['Com_name'])
 
         return rank.to_dict(orient = 'records')
     except Exception as e:

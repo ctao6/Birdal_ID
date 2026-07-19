@@ -56,7 +56,14 @@ def image_color_vector(pixels, cluster_centers, temperature = 1) -> np.ndarray:
         vector, directly comparable to a species row in the reference table.
 
     """
+    total = np.zeros(len(cluster_centers))
 
+    for pixel in pixels:
+        total += pixel_weights(pixel, cluster_centers, temperature)
+
+    return total / len(pixels)
+
+    """
     pixels_expanded = pixels[:, np.newaxis, :]
     diffs = cluster_centers - pixels_expanded
     squared = diffs**2
@@ -67,6 +74,7 @@ def image_color_vector(pixels, cluster_centers, temperature = 1) -> np.ndarray:
     weights = raw_weights/raw_weights.sum(axis=1)[:,np.newaxis]
 
     return weights.mean(axis=0)
+    """
     
     
         

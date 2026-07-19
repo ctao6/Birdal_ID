@@ -26,21 +26,25 @@ species_metadata = species_metadata.drop(columns = ['Morph','Illustration_id','C
 
 @app.post("/identify")
 async def identify_bird(img: UploadFile, longitude: float = Form(...), latitude: float = Form(...), date: date = Form(...), plausible_species_json: str = Form(...)):
-    raw_bytes = await img.read()
-    image_stream = io.BytesIO(raw_bytes)
-    
-    plausible_species = json.loads(plausible_species_json)
 
-    pixels = load_opaque_pixels(image_stream, 1)
+    try:
+        raw_bytes = await img.read()
+        image_stream = io.BytesIO(raw_bytes)
+        
+        plausible_species = json.loads(plausible_species_json)
 
-    mask = species_metadata['Com_name'].isin(plausible_species)
+        pixels = load_opaque_pixels(image_stream, 1)
 
-    filtered_metadata = species_metadata[mask]
-    filtered_vectors = species_vectors[mask]
+        mask = species_metadata['Com_name'].isin(plausible_species)
 
-    image_vector = image_color_vector(pixels, cluster_centers, 0.1)
-    rank = rank_species(image_vector, filtered_vectors, filtered_metadata, 10, "cosine")
+        filtered_metadata = species_metadata[mask]
+        filtered_vectors = species_vectors[mask]
 
-    return rank.to_dict(orient = 'records')
+        image_vector = image_color_vector(pixels, cluster_centers, 0.1)
+        rank = rank_species(image_vector, filtered_vectors, filtered_metadata, 10, "cosine")
+
+        return rank.to_dict(orient = 'records')
+    except Exception as e:
+        return {"error": str(e), "traceback": traceback.format_exc()}
 
     

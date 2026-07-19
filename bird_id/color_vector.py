@@ -22,15 +22,6 @@ def pixel_weights(pixel_rgb: np.ndarray, cluster_centers: np.ndarray, temperatur
         np.ndarray of shape (24,) that sums to 1 -- this pixel's weight toward
         each of the 24 clusters, with closer clusters getting higher weight.
  
-    Hints:
-        - Compute Euclidean distance from this pixel to each of the 24 centers
-          (np.linalg.norm along the right axis will do this in one line for
-          all 24 centers at once -- no loop needed).
-        - Converting "distance" into "weight" needs an inverse relationship:
-          small distance -> large weight. A common trick is something like
-          1 / (distance + small_epsilon), or a negative-exponential/softmax
-          transform. Try the simplest version first, you can refine later.
-        - Don't forget to normalize the 24 weights so they sum to 1.
     """
 
     diffs = cluster_centers - pixel_rgb

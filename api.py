@@ -11,6 +11,7 @@ from datetime import date
 import io
 import json
 import pandas
+import traceback
 
 #function imports for id pipeline
 from bird_id.reference_data import load_cluster_centers, load_species_vectors

@@ -26,6 +26,7 @@ def load_opaque_pixels(png_path: str, alpha_threshold: int = 128) -> np.ndarray:
     """
 
     img = Image.open(png_path).convert("RGBA")
+    img = img.resize((150,150))
     array = np.asarray(img)
     alpha = array[:,:,3]
     mask = alpha >= alpha_threshold
